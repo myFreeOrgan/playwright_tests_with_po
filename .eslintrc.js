@@ -26,9 +26,16 @@ module.exports = {
     },
     rules: {
         'linebreak-style': ['error', 'windows'],
+        'max-len': 'off',
+        'no-dupe-keys': 'off',
+        'class-methods-use-this': 'off',
+        'no-plusplus': 'off',
+        'no-console': 'off',
+        'no-await-in-loop': 'off',
         'import/prefer-default-export': 'off',
-        "import/no-extraneous-dependencies": ["error", {
-            "devDependencies": ["**/test/**", "**/*.test.js", "**/fixture.js"]
+        'no-restricted-syntax': 'off',
+        'import/no-extraneous-dependencies': ['error', {
+            devDependencies: ['**/test/**', '**/*.test.js', '**/fixture.js'],
         }],
         indent: [
             'error',
