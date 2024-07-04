@@ -1,4 +1,6 @@
 const { BaseSwagLabPage } = require('./BaseSwagLab.page');
+const { ShopingCartPage } = require('./ShopingCart.page');
+const { generateRandomIndexes } = require('../../utils').default;
 
 export class InventoryPage extends BaseSwagLabPage {
     url = '/inventory.html';
@@ -38,13 +40,6 @@ export class InventoryPage extends BaseSwagLabPage {
         await addButton.click();
     }
 
-    async getItemInfoById(id) {
-        const name = await this.inventoryItemName.nth(id).textContent();
-        const price = parseFloat((await this.inventoryItemPrice.nth(id).textContent()).replace('$', ''));
-        const description = await this.page.locator('.inventory_item_desc').nth(id).textContent();
-        return { name, price, description };
-    }
-
     async getItemInfoByIndex(index) {
         const name = await this.inventoryItemName.nth(index).textContent();
         const price = parseFloat((await this.inventoryItemPrice.nth(index).textContent()).replace('$', ''));
@@ -61,10 +56,8 @@ export class InventoryPage extends BaseSwagLabPage {
         const addedItems = [];
 
         const itemCount = await this.inventoryItems.count();
-
-        const count = Math.floor(Math.random() * itemCount) + 1;
-
-        const randomIndexes = this.generateRandomIndexes(itemCount, count);
+        const randomAmount = Math.floor(Math.random() * itemCount) + 1;
+        const randomIndexes = generateRandomIndexes(itemCount, randomAmount);
 
         for (const index of randomIndexes) {
             await this.addItemToCartByIndex(index);
@@ -80,18 +73,12 @@ export class InventoryPage extends BaseSwagLabPage {
         return addedItems;
     }
 
-    generateRandomIndexes(maxIndex, count) {
-        const indexes = [];
-        while (indexes.length < count) {
-            const randomIndex = Math.floor(Math.random() * maxIndex);
-            if (!indexes.includes(randomIndex)) {
-                indexes.push(randomIndex);
-            }
-        }
-        return indexes;
-    }
-
     async goToCart() {
         await this.cartButton.click();
+    }
+
+    async goToCartPage() {
+        await this.goToCart();
+        return new ShopingCartPage(this.page);
     }
 }
