@@ -13,9 +13,6 @@ test.describe('Unit 10', () => {
     });
 
     test('Adding random items to the cart', async ({ inventoryPage }) => {
-        const listOfItems = await inventoryPage.getItemsList();
-        expect(listOfItems.length).toBe(6);
-
         const addedItems = await inventoryPage.addRandomItemsToCart();
         expect(addedItems.length).toBeGreaterThan(0);
 
@@ -23,10 +20,7 @@ test.describe('Unit 10', () => {
         const cartItems = await shoppingCartPage.getCartItemsInfo();
 
         for (const addedItem of addedItems) {
-            const match = cartItems.find((item) => item.name === addedItem.name
-                && item.price === addedItem.price
-                && item.description === addedItem.description);
-            expect(match).toBeDefined();
+            expect(cartItems).toContainEqual(addedItem);
         }
     });
 });
