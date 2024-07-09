@@ -10,7 +10,8 @@ export const test = base.extend({
     inventoryPage: async ({ page }, use) => {
         await use(new InventoryPage(page));
     },
-    shopingCartPage: async ({ page }, use) => {
+    shopingCartPage: async ({ page, inventoryPage }, use) => {
+        await inventoryPage.goToCart();
         await use(new ShopingCartPage(page));
     },
 });
