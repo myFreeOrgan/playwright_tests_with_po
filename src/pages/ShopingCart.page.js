@@ -7,6 +7,16 @@ export class ShopingCartPage extends BaseSwagLabPage {
 
     removeItemSelector = '[id^="remove"]';
 
+    checkout = '#checkout';
+
+    continueShopingButton = '#continue-shopping';
+
+    get checkoutButton() { return this.page.locator(this.checkout); }
+
+    async checkoutClick() {
+        await this.checkoutButton.click();
+    }
+
     get headerTitle() { return this.page.locator('.title'); }
 
     get cartItems() { return this.page.locator(this.cartItemSelector); }
