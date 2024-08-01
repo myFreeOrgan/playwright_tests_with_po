@@ -1,5 +1,6 @@
 const { expect } = require('@playwright/test');
 const { test } = require('../fixture');
+const { CheckoutOverviewPage } = require('../pages/CheckoutOverview.page');
 require('dotenv').config();
 
 const standardUser = process.env.STANDARD_USER;
@@ -29,8 +30,9 @@ test.describe('Unit 10', () => {
         await shoppingCartPage.checkoutClick();
 
         await checkoutInfoPage.fillInfo(standardFirstName, standardLastName, standardPostalCode);
+        await checkoutInfoPage.clickContinue();
 
-        const checkoutOverviewPage = await checkoutInfoPage.clickContinue();
+        const checkoutOverviewPage = new CheckoutOverviewPage(checkoutInfoPage.page);
         await checkoutOverviewPage.verifyItemsInCheckout(addedItems);
 
         const calculatedTotalPrice = await checkoutOverviewPage.calculateTotalPrice();
@@ -38,8 +40,11 @@ test.describe('Unit 10', () => {
 
         await checkoutOverviewPage.clickFinish();
 
-        await checkoutCompletePage.verifyThankYouMessage();
-        await checkoutCompletePage.verifyDispatchMessage();
+        await expect(checkoutCompletePage.thankYouMessage).toBeVisible();
+        await expect(checkoutCompletePage.thankYouMessage).toHaveText('Thank you for your order!');
+        await expect(checkoutCompletePage.dispatchMessage).toBeVisible();
+        await expect(checkoutCompletePage.dispatchMessage).toHaveText('Your order has been dispatched, and will arrive just as fast as the pony can get there!');
+
         await checkoutCompletePage.clickBackHome();
 
         const itemsInInventory = await inventoryPage.getItemsList();

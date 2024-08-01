@@ -1,5 +1,4 @@
 const { BaseSwagLabPage } = require('./BaseSwagLab.page');
-const { CheckoutOverviewPage } = require('./CheckoutOverview.page');
 
 export class CheckoutInfoPage extends BaseSwagLabPage {
     url = '/checkout-step-one.html';
@@ -22,6 +21,5 @@ export class CheckoutInfoPage extends BaseSwagLabPage {
 
     async clickContinue() {
         await this.continueButton.click();
-        return new CheckoutOverviewPage(this.page);
     }
 }
