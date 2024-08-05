@@ -18,7 +18,7 @@ export class InventoryPage extends BaseSwagLabPage {
     get cartButton() { return this.page.locator('.shopping_cart_link'); }
 
     async selectSortOption(value) {
-        await this.productSorting.selectOption(value);
+        await this.page.selectOption('#product_sort_container', value);
     }
 
     async getNameValues() {
@@ -54,14 +54,12 @@ export class InventoryPage extends BaseSwagLabPage {
 
     async addRandomItemsToCart() {
         const addedItems = [];
-
         const itemCount = await this.inventoryItems.count();
         const randomAmount = Math.floor(Math.random() * itemCount) + 1;
         const randomIndexes = generateRandomIndexes(itemCount, randomAmount);
 
         for (const index of randomIndexes) {
             await this.addItemToCartByIndex(index);
-
             try {
                 const itemInfo = await this.getItemInfoByIndex(index);
                 addedItems.push(itemInfo);
